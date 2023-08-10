@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
 import API, { endpoints } from "../configs/API"
 import { Button, Container, Form, Nav, NavDropdown, Navbar } from "react-bootstrap"
+import { Link, useNavigate } from "react-router-dom"
 
 const Header = () => {
     const [categories, setCategories] = useState([])
+    const [q, setQ] = useState("")
+    const nav = useNavigate()
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -13,6 +16,11 @@ const Header = () => {
 
         loadCategories()
     }, [])
+
+    const search = (evt) => {
+        evt.preventDefault()
+        nav(`/?kw=${q}`)
+    }
 
     return (
         <>
@@ -25,21 +33,26 @@ const Header = () => {
                         <Nav.Link href="/">Trang chủ</Nav.Link>
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/">Action</NavDropdown.Item>
-                        {categories.map(category => <NavDropdown.Item key={category.id}>{category.name}</NavDropdown.Item>)}
+                        {categories.map(category => {
+                            let url = `/?cateId=${category.id}`
+                            return <Link to={url} className="nav-link" key={category.id}>{category.name}</Link>
+                        })}
                         <NavDropdown.Divider />
                         <NavDropdown.Item href="/">
                             Separated link
                         </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Form className="d-flex">
+                    <Form onSubmit={search} className="d-flex">
                         <Form.Control
                         type="search"
                         placeholder="Search"
                         className="me-2"
                         aria-label="Search"
+                        value={q}
+                        onChange={e => setQ(e.target.value)}
                         />
-                        <Button variant="outline-success">Search</Button>
+                        <Button type="submit" variant="outline-success">Search</Button>
                     </Form>
                     </Navbar.Collapse>
                 </Container>
