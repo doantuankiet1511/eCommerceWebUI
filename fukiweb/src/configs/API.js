@@ -2,7 +2,12 @@ import axios from "axios";
 
 export const endpoints = {
     "categories": "/categories/",
-    "products": "/products/"
+    
+    "products": "/products/",
+    "product-detail": (productId) => `/products/${productId}`,
+
+    "shop-detail": (shopId) => `/shops/${shopId}`,
+    "shop-detail-product": (shopId) => `/shops/${shopId}/products/`
 }
 
 export default axios.create({
