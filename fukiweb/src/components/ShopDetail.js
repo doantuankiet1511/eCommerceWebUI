@@ -24,13 +24,13 @@ const ShopDetail = () => {
 
         loadShop()
         loadProduct()
-    }, [])
+    }, [shopId])
 
     if (shop === null || products === null)
         return <Loading />
     return (
         <>
-            <h1>Cửa hàng</h1>
+            <h1>Cửa hàng {shop.name}</h1>
             <Row>
                 {products.map(product => <Items obj={product}/>)}
             </Row>
