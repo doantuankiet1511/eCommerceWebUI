@@ -5,6 +5,7 @@ import cookie from "react-cookies"
 import Loading from "../layouts/Loading"
 import { MyUserContext } from "../configs/MyContext"
 import { Navigate } from "react-router-dom"
+import ErrorAlert from "../layouts/ErrorAlert"
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -58,7 +59,7 @@ const Login = () => {
         <>
             <h1 className="text-center text-success">ĐĂNG NHẬP NGƯỜI DÙNG</h1>
 
-            {err?<div className="alert alert-danger">{err}</div>:""}
+            {err?<ErrorAlert err={err} />:""}
 
             <Form onSubmit={login}>
                 <Form.Group className="mb-3" controlId="formGroupUsername">

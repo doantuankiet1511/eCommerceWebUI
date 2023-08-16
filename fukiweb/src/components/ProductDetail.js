@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Loading from "../layouts/Loading"
-import { Badge } from "react-bootstrap"
+import { Badge, Button, Card, Col, Row } from "react-bootstrap"
 import API, { endpoints } from "../configs/API"
 import { Link, useParams } from "react-router-dom"
 
@@ -24,19 +24,27 @@ const ProductDetail = () => {
 
     return (
         <>
-            <h1 className="text-center text-info">CHI TIẾT SẢN PHẨM</h1>
-            <h2 className="text-center text-info">{product.name}</h2>
-            <div>
-                <div>
-                    <img src={product.image} width="120" alt={product.name}/>
-                </div>
-                {product.tags.map(tag => <Badge key={tag.id} className="m-1" bg="primary">{tag.name}</Badge>)}
-            </div>
-            <p dangerouslySetInnerHTML={{__html: product.description}}></p>
-            
-            <div>
-                <Link to={url} className="nav-link">{product.shop.name}</Link>
-            </div>
+            <Row className="mt-2">
+                <Col md={4}>
+                    <img src={product.image} width="100%" alt={product.name}/>
+                </Col>
+                <Col md={8}>
+                    <h2 className="text-center">{product.name}</h2>
+                    <hr/>
+                    <div>
+                        <p>Giá: {product.price}</p>
+                        <p>Loại sản phẩm: {product.category.name}</p>
+                        <p dangerouslySetInnerHTML={{__html:  product.description}}></p>
+                    </div>
+                    <div>
+                        {product.tags.map(tag => <Badge key={tag.id} className="m-1" bg="primary">{tag.name}</Badge>)}
+                    </div>
+                    <div>
+                        <Button>Thêm vào giỏ</Button>
+                    </div>
+                </Col>
+            </Row>
+        
         </>
     )
 }
