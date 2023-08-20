@@ -12,7 +12,9 @@ export const endpoints = {
 
     "login": "/o/token/",
     "current-user": "/users/current-user/",
-    "register": "/users/"
+    "register": "/users/",
+
+    "comments": (productId) => `/products/${productId}/comments/` //GET-POST
 }
 
 export const authAPI = () => axios.create({

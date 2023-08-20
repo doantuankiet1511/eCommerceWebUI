@@ -12,6 +12,10 @@ import { MyUserContext } from './configs/MyContext';
 import { useReducer } from 'react';
 import MyUserReducer from './reducers/MyUserReducer';
 import Register from './components/Register';
+import 'moment/locale/vi'
+import moment from 'moment';
+
+moment().local("vi")
 
 function App() {
   const [user, dispatch] = useReducer(MyUserReducer, cookie.load('current-user') || null)
