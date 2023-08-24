@@ -15,7 +15,11 @@ export const endpoints = {
     "register": "/users/",
 
     "comments": (productId) => `/products/${productId}/comments/`, //GET-POST
+    "action-comment": (commentId) => `/comments/${commentId}/`, //PUT-PATCH-DELETE
+    "reply-comment": (commentId) => `/comments/${commentId}/reply-comment/`,
+
     "reviews": (productId) => `/products/${productId}/reviews/`, //GET-POST
+    
     "like-product": (productId) => `/products/${productId}/like/`
 }
 

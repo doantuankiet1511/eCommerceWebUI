@@ -9,6 +9,7 @@ import Rating from "react-rating"
 import {AiOutlineStar, AiFillStar} from "react-icons/ai"
 import ErrorAlert from "../layouts/ErrorAlert"
 import Comment from "../layouts/Comment"
+import CommentForm from "../layouts/CommentForm"
 
 const ProductDetail = () => {
     const [product, setProduct] = useState(null)
@@ -16,7 +17,8 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(false)
 
     const [comments, setComments] = useState([])
-    const [contentComment, setContentComment] = useState("")
+    // const [contentComment, setContentComment] = useState("")
+    const [activeComment, setActiveComment] = useState(null)
 
     const [reviews, setReviews] = useState([])
     const [rate, setRate] = useState(0)
@@ -24,7 +26,7 @@ const ProductDetail = () => {
 
     const [user, ] = useContext(MyUserContext)
     const [like, setLike] = useState()
-    const [changed, setChanged] = useState()
+    const [changed, setChanged] = useState(1)
 
     const [errComment, setErrComment] = useState("")
     const [errReview, setErrReview] = useState("")
@@ -52,7 +54,7 @@ const ProductDetail = () => {
         }
 
         loadComments()
-    }, [productId])
+    }, [productId, changed])
 
     useEffect(() => {
         const loadReviews = async () => {
@@ -63,8 +65,31 @@ const ProductDetail = () => {
         loadReviews()
     }, [productId])
 
-    const addComment = (evt) => {
-        evt.preventDefault()
+    // const addComment = (evt) => {
+    //     evt.preventDefault()
+
+    //     const process = async () => {
+    //         try {
+    //             let res = await authAPI().post(endpoints['comments'](productId), {
+    //                 "content": contentComment
+    //             })
+    //             setComments(current => ([res.data, ...current]))
+    //             setContentComment("")
+    //         } catch (ex) {
+    //             console.error(ex)
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
+
+    //     if (contentComment === "")
+    //         setErrComment("Bạn cần phải nhập nội dung để bình luận")
+    //     setLoading(true)
+    //     process()
+    // }
+
+    const addComment = (contentComment) => {
+        // evt.preventDefault()
 
         const process = async () => {
             try {
@@ -72,7 +97,72 @@ const ProductDetail = () => {
                     "content": contentComment
                 })
                 setComments(current => ([res.data, ...current]))
-                setContentComment("")
+                // setContentComment("")
+            } catch (ex) {
+                console.error(ex)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        if (contentComment === "")
+            setErrComment("Bạn cần phải nhập nội dung để bình luận")
+        setLoading(true)
+        process()
+    }
+
+    const editComment = (contentComment, commentId) => {
+
+        const process = async () => {
+            try {
+                let res = await authAPI().put(endpoints['action-comment'](commentId), {
+                    "content": contentComment
+                })
+                setChanged(res.data)
+                setActiveComment(null)
+            } catch (ex) {
+                console.error(ex)
+            } finally {
+                setLoading(false)
+            }
+
+        }
+
+        if (contentComment === "")
+            setErrComment("Bạn cần phải nhập nội dung để bình luận")
+        setLoading(true)
+        process()
+    }
+
+    const deleteComment = (commentId) => {
+        const process = async () => {
+            try {
+                let res = await authAPI().delete(endpoints['action-comment'](commentId))
+                console.log(res.data)
+                setChanged(res.data)
+                setActiveComment(null)
+            } catch (ex){
+                console.error(ex)
+            } finally {
+                setLoading(false)
+            }
+        }
+        if (window.confirm("Bạn có chắc chắn muốn xóa bình luận này?")) {
+            setLoading(true)
+            process()
+        }
+    }
+
+    const replyComment = (contentComment, commentId) => {
+
+        const process = async () => {
+            try {
+                let res = await authAPI().post(endpoints['reply-comment'](commentId), {
+                    "content": contentComment
+                })
+                setComments(current => ([res.data, ...current]))
+                setChanged(res.data)
+                setActiveComment(null)
             } catch (ex) {
                 console.error(ex)
             } finally {
@@ -268,24 +358,42 @@ const ProductDetail = () => {
             <hr/>
 
             <h4>BÌNH LUẬN</h4>
-            {errComment?<ErrorAlert err={errComment} />:""}
+            {/* {errComment?<ErrorAlert err={errComment} />:""} */}
             {user===null?<Link to="/login" className="btn btn-primary">Đăng nhập</Link>:(
-                <Form onSubmit={addComment}>
-                    <Form.Group className="mb-3" controlId="exampleform.ControlTextarea">
-                        <Form.Control as="textarea" rows={3} 
-                                        placeholder="Nội dung bình luận ..." 
-                                        value={contentComment}
-                                        onChange={e => setContentComment(e.target.value)}/>
-                    </Form.Group>
+                <CommentForm 
+                    submitLabel="Bình luận" 
+                    handleSubmit={addComment} 
+                    errMessage={errComment?errComment:""}
+                    loading={loading}
+                />
+                // <Form onSubmit={addComment}>
+                //     <Form.Group className="mb-3" controlId="exampleform.ControlTextarea">
+                //         <Form.Control as="textarea" rows={3} 
+                //                         placeholder="Nội dung bình luận ..." 
+                //                         value={contentComment}
+                //                         onChange={e => setContentComment(e.target.value)}/>
+                //     </Form.Group>
 
-                    {loading?<Loading />:<Button variant="primary" type="submit">Bình luận</Button>}        
-                </Form>
+                //     {loading?<Loading />:<Button variant="primary" type="submit">Bình luận</Button>}        
+                // </Form>
             )}
             <hr/>
 
             {comments === null ? <Loading />: (
                 comments.map(comment => (
-                    <Comment key={comment.id} obj={comment} replies={comment.replies}/>
+                    <Comment 
+                        key={comment.id} 
+                        obj={comment} 
+                        replies={comment.replies} 
+                        currentUserId={user === null ? "": user.id} 
+                        deleteComment={deleteComment}
+                        replyComment={replyComment}
+                        editComment={editComment}
+                        activeComment={activeComment}
+                        setActiveComment={setActiveComment}
+                        errMessage={errComment}
+                        loading={loading}
+                    />
                 ))
             )}
 
