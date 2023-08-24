@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import InputItem from "../layouts/InputItem"
-import { Button, Form } from "react-bootstrap"
+import { Button, Form, Row } from "react-bootstrap"
 import Loading from "../layouts/Loading"
 import API, { endpoints } from "../configs/API"
 import ErrorAlert from "../layouts/ErrorAlert"
@@ -12,7 +12,8 @@ const Register = () => {
         "lastName": "",
         "username": "",
         "password": "",
-        "confirmPassword": ""
+        "confirmPassword": "",
+        "role": ""
     })
     const avatar = useRef()
     const nav = useNavigate()
@@ -29,6 +30,7 @@ const Register = () => {
                 form.append("last_name", user.lastName)
                 form.append("username", user.username)
                 form.append("password", user.password)
+                form.append("role", user.role)
                 if (avatar.current.files.length > 0)
                     form.append("avatar", avatar.current.files[0])
     
@@ -84,6 +86,17 @@ const Register = () => {
                             setValue={setValue}/>
                 <InputItem label="Xác nhận mật khẩu" type="password" value={user.confirmPassword} controlId="formGroupConfirmPassword" name="confirmPassword"
                             setValue={setValue}/>
+                <Form.Group className="mb-3">
+                    <Form.Label>
+                        Bạn muốn trở thành
+                    </Form.Label>
+                    <Row xs="auto" className="ms-1">
+                        <Form.Check inline label="Khách hàng" type="radio" name="role" 
+                            value="Customer" onChange={setValue} id={`inline-radio-1`} checked />
+                        <Form.Check inline label="Nhà cung cấp" type="radio" name="role"
+                            value="Seller" onChange={setValue} id={`inline-radio-2`} />
+                    </Row>
+                </Form.Group>
                 <InputItem label="Ảnh đại diện" type="file" controlId="avatar" ref={avatar} name="avatar"/>
                 {loading ? <Loading /> : <Button variant="primary" type="submit">Đăng ký</Button>}
 

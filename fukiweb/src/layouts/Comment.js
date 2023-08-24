@@ -1,10 +1,13 @@
 import { Col, Image, Row } from "react-bootstrap"
 import Moment from "react-moment"
 import CommentForm from "./CommentForm"
+import { useState } from "react"
+import { LiaChevronUpSolid } from "react-icons/lia"
 
 const Comment = ({ obj, replies, currentUserId, deleteComment, replyComment, editComment, activeComment, setActiveComment, errMessage, loading }) => {
     // const fiveMinutes = 300000
     // const timePassed = new Date() - new Date(obj.created_date) > fiveMinutes
+    const [isDisplay, setIsDisplay] = useState(false)
 
     const canReply = Boolean(currentUserId)
     const canEdit = currentUserId === obj.user.id 
@@ -21,10 +24,28 @@ const Comment = ({ obj, replies, currentUserId, deleteComment, replyComment, edi
                 </Col>
                 <Col xs={9} md={11}>
                     <p>{obj.content}</p>
-                    <small>({obj.id}) Được bình luận bởi {obj.user.username} vào <Moment fromNow>{obj.created_date}</Moment> </small>
+                    <small>Được bình luận bởi {obj.user.username} vào <Moment fromNow>{obj.created_date}</Moment> </small>
                     <Row xs="auto">
                         {canReply && (
-                            <Col><div style={{cursor: "pointer"}} onClick={() => setActiveComment({id: obj.id, type: "replying"})}>Phản hồi</div></Col>
+                            <Col>
+                                <div className="d-flex">
+                                    <div 
+                                        style={{cursor: "pointer"}} 
+                                        onClick={() => {
+                                            setActiveComment({id: obj.id, type: "replying"})
+                                            setIsDisplay(true)
+                                        }}>
+                                        Phản hồi
+                                    </div>
+                                    {obj.replies.length > 0 ? <div className="ms-1">({obj.replies.length})</div> : " "}
+                                </div>
+
+                                {isDisplay && obj.replies.length > 0 ? 
+                                    <div style={{cursor: "pointer"}} className="me-2 ms-1" onClick={() => setIsDisplay(false)}>
+                                        <LiaChevronUpSolid className="me-1" /> Thu gọn
+                                    </div> : ""
+                                }
+                            </Col>
                         )}
                         {canEdit && (
                             <Col><div style={{cursor: "pointer"}} onClick={() => setActiveComment({id: obj.id, type: "editing"})}>Chỉnh sửa</div></Col>
@@ -40,6 +61,8 @@ const Comment = ({ obj, replies, currentUserId, deleteComment, replyComment, edi
                 <CommentForm 
                     submitLabel="Phản hồi"
                     handleSubmit={(content) => replyComment(content, obj.id)}
+                    hasCancelButton
+                    handleCancel={() => setActiveComment(null)}
                     errMessage={errMessage?errMessage:""}
                     loading={loading}
                 />
@@ -57,7 +80,7 @@ const Comment = ({ obj, replies, currentUserId, deleteComment, replyComment, edi
                 />
             )}
 
-            {replies.length > 0 && (
+            {replies.length > 0 && isDisplay && (
                 <div className="ms-4 p-1">
                     {replies.map(reply => (
                         <Comment 
