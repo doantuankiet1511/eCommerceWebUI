@@ -26,13 +26,13 @@ const Comment = ({ obj, replies, currentUserId, deleteComment, replyComment, edi
                     <p>{obj.content}</p>
                     <small>Được bình luận bởi {obj.user.username} vào <Moment fromNow>{obj.created_date}</Moment> </small>
                     <Row xs="auto">
-                        {canReply && (
+                        {(canReply || !currentUserId) && (
                             <Col>
                                 <div className="d-flex">
                                     <div 
                                         style={{cursor: "pointer"}} 
                                         onClick={() => {
-                                            setActiveComment({id: obj.id, type: "replying"})
+                                            {canReply && setActiveComment({id: obj.id, type: "replying"})}
                                             setIsDisplay(true)
                                         }}>
                                         Phản hồi

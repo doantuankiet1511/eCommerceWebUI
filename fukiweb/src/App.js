@@ -8,35 +8,42 @@ import { Container } from 'react-bootstrap';
 import ProductDetail from './components/ProductDetail';
 import ShopDetail from './components/ShopDetail';
 import Login from './components/Login';
-import { MyUserContext } from './configs/MyContext';
-import { useReducer } from 'react';
+import { CartContext, MyUserContext } from './configs/MyContext';
+import { useReducer, useState } from 'react';
 import MyUserReducer from './reducers/MyUserReducer';
 import Register from './components/Register';
 import 'moment/locale/vi'
 import moment from 'moment';
+import CartDetail from './components/CartDetail';
+import CartReducer from './reducers/CartReducer';
 
 moment().local("vi")
 
 function App() {
   const [user, dispatch] = useReducer(MyUserReducer, cookie.load('current-user') || null)
+  const [stateCart, dispatchCart] = useReducer(CartReducer, [])
+  
   return (
     <MyUserContext.Provider value={[user, dispatch]}>
-      <BrowserRouter>
-        <Header />
+      <CartContext.Provider value={[stateCart, dispatchCart]}>
+        <BrowserRouter>
+          <Header />
 
-        <Container>
-          <Routes>
-            <Route path='/' element={<Products />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/products/:productId' element={<ProductDetail />} />
-            <Route path='/shops/:shopId/products' element={<ShopDetail />} />
-            <Route path='*' element={<div className='alert alert-info m-1'>Coming soon...</div>} /> 
-          </Routes>
-        </Container>
+          <Container>
+            <Routes>
+              <Route path='/' element={<Products />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/products/:productId' element={<ProductDetail />} />
+              <Route path='/shops/:shopId/products' element={<ShopDetail />} />
+              <Route path='/cart' element={<CartDetail />} />
+              <Route path='*' element={<div className='alert alert-info m-1'>Coming soon...</div>} /> 
+            </Routes>
+          </Container>
 
-        <Footer />
-      </BrowserRouter>
+          <Footer />
+        </BrowserRouter>
+      </CartContext.Provider>
     </MyUserContext.Provider>
   );
 }

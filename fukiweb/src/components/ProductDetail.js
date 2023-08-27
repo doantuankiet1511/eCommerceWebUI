@@ -28,7 +28,7 @@ const ProductDetail = () => {
     const [like, setLike] = useState()
     const [changed, setChanged] = useState(1)
 
-    const [errComment, setErrComment] = useState("")
+    const [errComment, setErrComment] = useState("err")
     const [errReview, setErrReview] = useState("")
 
     const [show, setShow] = useState(false);
@@ -255,7 +255,7 @@ const ProductDetail = () => {
                         
                     </div>
                     <div>
-                        <p>Giá: {product.price}</p>
+                        <p>Giá: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</p>
                         <p>Loại sản phẩm: {product.category.name}</p>
                         <p dangerouslySetInnerHTML={{__html:  product.description}}></p>
                     </div>

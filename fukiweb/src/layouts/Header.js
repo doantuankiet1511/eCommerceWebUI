@@ -2,12 +2,14 @@ import { useContext, useEffect, useState } from "react"
 import API, { endpoints } from "../configs/API"
 import { Button, Container, Dropdown, Form, Nav, Navbar } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
-import { MyUserContext } from "../configs/MyContext"
+import { CartContext, MyUserContext } from "../configs/MyContext"
+import { LiaShoppingCartSolid } from "react-icons/lia"
 
 const Header = () => {
     const [q, setQ] = useState("")
     const nav = useNavigate()
     const [user, dispatch] = useContext(MyUserContext)
+    const [stateCart, ] = useContext(CartContext)
 
     const search = (evt) => {
         evt.preventDefault()
@@ -19,6 +21,10 @@ const Header = () => {
             "type": "logout"
         })
     }
+
+    const quantity = stateCart.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.quantity
+    }, 0)
 
     let listYourShop = `/users/shops`
     let profileUser = `/users/current-user`
@@ -66,6 +72,18 @@ const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav>
                             {userInfo}
+                        </Nav>
+                        <Nav>
+                            <Link to="/wish-list" className="nav-link d-flex">
+                                <div>Danh sách yêu thích</div> 
+                            </Link>
+                        </Nav>
+                        <Nav>
+                            <Link to="/cart" className="nav-link d-flex">
+                                <div className="mt-1">Giỏ hàng</div> 
+                                <LiaShoppingCartSolid size="2em"/>
+                                <sup>{quantity?quantity:""}</sup>
+                            </Link>
                         </Nav>
                         <Form onSubmit={search} className="d-flex">
                             <Form.Control
