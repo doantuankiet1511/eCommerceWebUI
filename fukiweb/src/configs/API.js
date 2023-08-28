@@ -20,7 +20,10 @@ export const endpoints = {
 
     "reviews": (productId) => `/products/${productId}/reviews/`, //GET-POST
     
-    "like-product": (productId) => `/products/${productId}/like/`
+    "like-product": (productId) => `/products/${productId}/like/`,
+
+    "payment-methods": "/payment-methods/",
+    "checkout": "/orders/"
 }
 
 export const authAPI = () => axios.create({

@@ -59,7 +59,7 @@ const CartDetail = () => {
                         <tbody>
                             {stateCart.map(item => 
                                 <>
-                                    <tr>
+                                    <tr key={item.id}>
                                         <td className="text-center">
                                             <Image src={item.image} alt={item.name} width="30%"/>
                                         </td>
@@ -80,6 +80,7 @@ const CartDetail = () => {
                     </Table>
                     <div>Số lượng: {quantity}</div>
                     <div>Tổng số tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}</div>
+                    <Link to={'/cart/checkout'} className="btn btn-primary">Thanh toán</Link>
                 </>
             ) : 
             <>

@@ -16,6 +16,7 @@ import 'moment/locale/vi'
 import moment from 'moment';
 import CartDetail from './components/CartDetail';
 import CartReducer from './reducers/CartReducer';
+import CartCheckout from './components/CartCheckout';
 
 moment().local("vi")
 
@@ -37,6 +38,7 @@ function App() {
               <Route path='/products/:productId' element={<ProductDetail />} />
               <Route path='/shops/:shopId/products' element={<ShopDetail />} />
               <Route path='/cart' element={<CartDetail />} />
+              <Route path='/cart/checkout' element={<CartCheckout />} />
               <Route path='*' element={<div className='alert alert-info m-1'>Coming soon...</div>} /> 
             </Routes>
           </Container>

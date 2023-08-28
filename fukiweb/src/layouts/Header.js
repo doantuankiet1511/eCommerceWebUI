@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import API, { endpoints } from "../configs/API"
-import { Button, Container, Dropdown, Form, Nav, Navbar } from "react-bootstrap"
+import { Badge, Button, Container, Dropdown, Form, Nav, Navbar } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { CartContext, MyUserContext } from "../configs/MyContext"
 import { LiaShoppingCartSolid } from "react-icons/lia"
@@ -82,7 +82,7 @@ const Header = () => {
                             <Link to="/cart" className="nav-link d-flex">
                                 <div className="mt-1">Giỏ hàng</div> 
                                 <LiaShoppingCartSolid size="2em"/>
-                                <sup>{quantity?quantity:""}</sup>
+                                <sup><Badge bg="danger">{quantity?quantity:""}</Badge></sup>
                             </Link>
                         </Nav>
                         <Form onSubmit={search} className="d-flex">
