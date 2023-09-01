@@ -17,6 +17,13 @@ import moment from 'moment';
 import CartDetail from './components/CartDetail';
 import CartReducer from './reducers/CartReducer';
 import CartCheckout from './components/CartCheckout';
+import ProfileUser from './components/ProfileUser';
+import ChangePassword from './components/ChangePassword';
+import MyShop from './components/MyShop';
+import AddProduct from './components/AddProduct';
+import AddShop from './components/AddShop';
+import EditProduct from './components/EditProduct';
+import ListRegisterSeller from './components/ListRegisterSeller';
 
 moment().local("vi")
 
@@ -39,6 +46,29 @@ function App() {
               <Route path='/shops/:shopId/products' element={<ShopDetail />} />
               <Route path='/cart' element={<CartDetail />} />
               <Route path='/cart/checkout' element={<CartCheckout />} />
+              
+              {user ? (
+                <>
+                  <Route path='/profile-user' element={<ProfileUser />} />
+                  <Route path='/profile-user/change-password' element={<ChangePassword />} />
+                </>
+              ) : <Route path='*' element={<div className='alert alert-info m-1'>Bạn cần phải đăng nhập</div>} />}
+              
+              {(user && (user.role === "Seller" || user.role === "Employee")) ? (
+                <>
+                  <Route path='/create-shop' element={<AddShop />} />
+                  <Route path='/my-shop' element={<MyShop />} />
+                  <Route path='/add-product' element={<AddProduct />} />
+                  <Route path='/edit-product/:productId' element={<EditProduct />} />
+                </>
+              ) : <Route path='*' element={<div className='alert alert-info m-1'>Bạn không có quyền truy cập</div>} />}
+              
+              {user && user.role === "Employee" ? (
+                <>
+                  <Route path='/list-seller' element={<ListRegisterSeller />} />
+                </>
+              ) : <Route path='*' element={<div className='alert alert-info m-1'>Bạn không có quyền truy cập</div>} />}
+
               <Route path='*' element={<div className='alert alert-info m-1'>Coming soon...</div>} /> 
             </Routes>
           </Container>

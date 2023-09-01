@@ -17,6 +17,7 @@ const Header = () => {
     }
 
     const logout = () => {
+        nav('/')
         dispatch({
             "type": "logout"
         })
@@ -26,9 +27,11 @@ const Header = () => {
         return accumulator + currentValue.quantity
     }, 0)
 
-    let listYourShop = `/users/shops`
-    let profileUser = `/users/current-user`
-    let listUserRegister = `/users/confirm-register`
+    let createShop = `/create-shop`
+    let myShop = `/my-shop`
+    let profileUser = `/profile-user`
+    let changePassword = `/profile-user/change-password`
+    let listRegisterSeller = `/list-seller`
 
     let userInfo = (
         <>
@@ -48,11 +51,12 @@ const Header = () => {
 
                     <Dropdown.Menu variant="secondary">
                         <Dropdown.Item> <Link className="nav nav-link" to={profileUser}> Thông tin cá nhân </Link> </Dropdown.Item>
-                        <Dropdown.Item> <Link className="nav nav-link" to={profileUser}> Đổi mật khẩu </Link> </Dropdown.Item>
-                        {user.role === "Seller" || user.role === "Employee" ?
-                            <Dropdown.Item> <Link className="nav nav-link" to={listYourShop}> Cửa hàng của bạn </Link></Dropdown.Item> : null}
+                        <Dropdown.Item> <Link className="nav nav-link" to={changePassword}> Đổi mật khẩu </Link> </Dropdown.Item>
+                        {user.is_verified && user.role === "Seller" || user.role === "Employee" ?
+                            <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item> : 
+                            <Dropdown.Item> <Link className="nav nav-link" to={createShop}>Tạo cửa hàng</Link></Dropdown.Item>}
                         {user.role === "Employee" ? 
-                            <Dropdown.Item> <Link className="nav nav-link" to={listUserRegister}> Danh sách đăng ký </Link></Dropdown.Item> : null}
+                            <Dropdown.Item> <Link className="nav nav-link" to={listRegisterSeller}> Danh sách đăng ký </Link></Dropdown.Item> : null}
                         <Dropdown.Divider />
                         <Dropdown.Item>
                             <Button className="btn btn-danger" onClick={logout}>Đăng xuất</Button>

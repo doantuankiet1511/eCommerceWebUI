@@ -12,7 +12,18 @@ export const endpoints = {
 
     "login": "/o/token/",
     "current-user": "/users/current-user/",
+    "change-password": "/users/change-password/",
     "register": "/users/",
+
+    "list-seller": "/users/list-confirm-register/",
+    "confirm-seller": (userId) => `/users/${userId}/confirm/`, //PATCH
+    
+    "my-shop": "/users/my-shop/",
+    "add-shop": "/shops/",
+    "edit-shop": (shopId) => `/shops/${shopId}/`, //PUT-PATCH
+    "add-product": "/products/", //POST
+    "action-product": (productId) => `/products/${productId}/`, //PUT-PATCH-DELETE
+    "updated-tags": (productId) => `/products/${productId}/updated-tags/`, //PUT
 
     "comments": (productId) => `/products/${productId}/comments/`, //GET-POST
     "action-comment": (commentId) => `/comments/${commentId}/`, //PUT-PATCH-DELETE

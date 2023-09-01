@@ -8,6 +8,7 @@ import Categories from "./Categories"
 
 const Products = () => {
     const [products, setProducts] = useState(null)
+    const [categories, setCategories] = useState([])
     const [page, setPage] = useState(1)
     const [q] = useSearchParams()
 
@@ -32,9 +33,17 @@ const Products = () => {
             }
         }
 
+        const loadCategories = async () => {
+            let res = await API.get(endpoints['categories'])
+            setCategories(res.data)
+        }
+
         setProducts(null)
         loadProducts()
+        loadCategories()
     }, [page, q]) 
+
+    const getNameCategory = categories.filter(c => c.id === parseInt(q.get("cateId"))).map(c => c.name)
 
     const nextPage = () => setPage(current => current + 1)
     const prevPage = () => setPage(current => current - 1)
@@ -50,7 +59,7 @@ const Products = () => {
                         <Categories />
                     </Col>
                     <Col xs={12} md={10}>
-                        <div className="alert alert-info mt-1">Không có sản phẩm nào!!!</div>
+                        <div className="alert alert-info mt-1">Không có sản phẩm nào {q.get("cateId") !== null ? <>thuộc {getNameCategory}</> : ""}!!!</div>
                     </Col>
                 </Row>
             </>
@@ -63,7 +72,7 @@ const Products = () => {
                     <Categories />
                 </Col>
                 <Col xs={12} md={10}>
-                    <h5>Sản phẩm</h5>
+                    <h5>Sản phẩm {q.get("cateId") !== null ? <>thuộc {getNameCategory}</> : ""}</h5>
                     <Row>
                         {products.map(product => <Items key={product.id} obj={product} />)}
                     </Row>

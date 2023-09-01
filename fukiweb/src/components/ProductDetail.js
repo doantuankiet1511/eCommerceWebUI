@@ -4,7 +4,7 @@ import { Badge, Button, Card, Col, Form, Image, Modal, Row } from "react-bootstr
 import API, { authAPI, endpoints } from "../configs/API"
 import { Link, useParams } from "react-router-dom"
 import Moment from "react-moment"
-import { MyUserContext } from "../configs/MyContext"
+import { CartContext, MyUserContext } from "../configs/MyContext"
 import Rating from "react-rating"
 import {AiOutlineStar, AiFillStar} from "react-icons/ai"
 import ErrorAlert from "../layouts/ErrorAlert"
@@ -30,6 +30,8 @@ const ProductDetail = () => {
 
     const [errComment, setErrComment] = useState("err")
     const [errReview, setErrReview] = useState("")
+
+    const [ , dispatchCart] = useContext(CartContext)
 
     const [show, setShow] = useState(false);
 
@@ -220,6 +222,13 @@ const ProductDetail = () => {
         process()
     }
 
+    const addToCart = () => {
+        dispatchCart({
+            type: "ADD_TO_CART",
+            payload: {...product, quantity: 1}
+        })
+    }
+
     if (product === null)
         return <Loading />
 
@@ -236,7 +245,7 @@ const ProductDetail = () => {
                     <hr/>
                     <div className="d-flex">
                         <div className="d-flex me-1">
-                            <p className="me-1">{product.avg_rate}</p>
+                            <p className="me-1">{product.avg_rate > 0 ? product.avg_rate : ""}</p>
                             <Rating
                                 emptySymbol= {<AiOutlineStar size="1rem"/>}
                                 fullSymbol= {<AiFillStar size="1rem"/>}
@@ -264,7 +273,7 @@ const ProductDetail = () => {
                     </div>
                     <div>
                         <Link to={url} className="btn btn-primary me-1">{product.shop.name}</Link>
-                        <Button className="me-1">Thêm vào giỏ</Button>
+                        <Button className="me-1" onClick={() => addToCart()}>Thêm vào giỏ</Button>
                         <button onClick={likeProcess} className={like === true || product.liked === true?"btn btn-danger":"btn btn-outline-danger"} style={{fontSize:"16px"}}>♡</button>
                     </div>
                 </Col>
@@ -274,7 +283,7 @@ const ProductDetail = () => {
 
             <h4>ĐÁNH GIÁ SẢN PHẨM</h4>
             {errReview?<ErrorAlert err={errReview} />:""}
-            {user===null ? <Link to="/login" className="btn btn-primary">Đăng nhập</Link> : ( 
+            {user===null ? <p>Vui lòng <Link to="/login">đăng nhập</Link> để đánh giá sản phẩm</p> : ( 
                 !product.auth_review.rate || !product.auth_review.content ? (
                     <Form onSubmit={addReview}>
                         <Rating
@@ -359,7 +368,7 @@ const ProductDetail = () => {
 
             <h4>BÌNH LUẬN</h4>
             {/* {errComment?<ErrorAlert err={errComment} />:""} */}
-            {user===null?<Link to="/login" className="btn btn-primary">Đăng nhập</Link>:(
+            {user===null ? <p>Vui lòng <Link to="/login">đăng nhập</Link> để bình luận</p> : (
                 <CommentForm 
                     submitLabel="Bình luận" 
                     handleSubmit={addComment} 

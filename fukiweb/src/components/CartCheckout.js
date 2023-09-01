@@ -5,6 +5,7 @@ import InputItem from "../layouts/InputItem"
 import API, { authAPI, endpoints } from "../configs/API"
 import Loading from "../layouts/Loading"
 import ErrorAlert from "../layouts/ErrorAlert"
+import { useNavigate } from "react-router-dom"
 
 const CartCheckout = () => {
     const [stateCart, dispatchCart] = useContext(CartContext)
@@ -17,7 +18,8 @@ const CartCheckout = () => {
     const [paymentMethod, setPaymentMethod] = useState([])
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState("")
-
+    const nav = useNavigate()
+    
     useEffect(() => {
         const loadPaymentMethod = async () => {
             let res = await API.get(endpoints['payment-methods'])
@@ -34,8 +36,6 @@ const CartCheckout = () => {
             "unit_price": item.price
         }
     })
-
-    console.log(order_details)
 
     const checkout = (evt) => {
         evt.preventDefault()
@@ -60,6 +60,7 @@ const CartCheckout = () => {
                     dispatchCart({
                         type: "REMOVE_ALL"
                     })
+                    nav("/")
                 }
             } catch (ex) {
                 let msg = ""
