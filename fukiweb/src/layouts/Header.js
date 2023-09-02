@@ -62,15 +62,18 @@ const Header = () => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu variant="secondary">
+                        <Dropdown.Item className="text-center">
+                            Vai trò: {user.role} 
+                            {user.is_verified ? <Badge bg="primary" className="ms-1">Đã xác nhận</Badge> : <Badge bg="danger" className="ms-1">Chưa xác nhận</Badge>}
+                        </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={profileUser}> Thông tin cá nhân </Link> </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={changePassword}> Đổi mật khẩu </Link> </Dropdown.Item>
-                        {user.is_verified && user.role === "Seller" || user.role === "Employee" ? 
-                            <>
-                                {user.shop === null 
-                                    ? <Dropdown.Item> <Link className="nav nav-link" to={createShop}>Tạo cửa hàng</Link></Dropdown.Item> 
-                                    : <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item>
-                                }
-                            </>: ""}
+                        {user.shop === null && user.role === "Seller" || user.role === "Employee" 
+                            ? <Dropdown.Item> <Link className="nav nav-link" to={createShop}>Tạo cửa hàng</Link></Dropdown.Item> 
+                            : ""}
+                        {user.is_verified && user.shop !== null && user.role === "Seller" || user.role === "Employee" 
+                            ? <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item> 
+                            : ""}
                         {user.role === "Employee" ? 
                             <Dropdown.Item> <Link className="nav nav-link" to={listRegisterSeller}> Danh sách đăng ký </Link></Dropdown.Item> : null}
                         <Dropdown.Divider />

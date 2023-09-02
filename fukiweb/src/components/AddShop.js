@@ -7,6 +7,8 @@ import ErrorAlert from "../layouts/ErrorAlert"
 import InputItem from "../layouts/InputItem"
 import { MyUserContext } from "../configs/MyContext"
 import cookie from "react-cookies"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import { CKEditor } from "@ckeditor/ckeditor5-react"
 
 const AddShop = () => {
     const [user, dispatch] = useContext(MyUserContext)
@@ -85,8 +87,16 @@ const AddShop = () => {
                 <Form onSubmit={addShop}>
                     <InputItem label="Tên cửa hàng" type="text" value={shop.name}
                                 name="name" setValue={setValue} />
-                    <InputItem label="Mô tả cửa hàng" type="text" value={shop.description} 
-                                name="description" setValue={setValue} />
+                    {/* <InputItem label="Mô tả cửa hàng" type="text" value={shop.description} 
+                                name="description" setValue={setValue} /> */}
+                    <Form.Group className="mb-3">
+                        <Form.Label>Mô tả cửa hàng</Form.Label>
+                        <CKEditor 
+                            editor={ClassicEditor}
+                            data={shop.description}
+                            onChange={(event, editor) => setShop({...shop, "description": editor.getData()})}
+                        />
+                    </Form.Group>
                     <InputItem label="Ảnh cửa hàng" type="file" ref={image} name="image" />
                 
                     {loading?<Loading />:<Button variant="primary" type="submit">Tạo</Button>}

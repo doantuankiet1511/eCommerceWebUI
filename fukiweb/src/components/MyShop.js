@@ -7,6 +7,8 @@ import Moment from "react-moment"
 import ModalUpdateTags from "../layouts/ModalUpdateTags"
 import ErrorAlert from "../layouts/ErrorAlert"
 import InputItem from "../layouts/InputItem"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import { CKEditor } from "@ckeditor/ckeditor5-react"
 
 const MyShop = () => {
     const [shopDetail, setShopDetail] = useState(null)
@@ -146,8 +148,16 @@ const MyShop = () => {
                             {errEdit ? <ErrorAlert err={errEdit} /> : ""}
                             <InputItem label="Tên cửa hàng" type="text" value={formEditShop.name}
                                         setValue={e => setFormEditShop({...formEditShop , "name": e.target.value})} />
-                            <InputItem label="Mô tả" type="text" value={formEditShop.description}
-                                        setValue={e => setFormEditShop({...formEditShop , "description": e.target.value})} />
+                            {/* <InputItem label="Mô tả" type="text" value={formEditShop.description}
+                                        setValue={e => setFormEditShop({...formEditShop , "description": e.target.value})} /> */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Mô tả cửa hàng</Form.Label>
+                                <CKEditor 
+                                    editor={ClassicEditor}
+                                    data={formEditShop.description}
+                                    onChange={(event, editor) => setFormEditShop({...formEditShop, "description": editor.getData()})}
+                                />
+                            </Form.Group>
                             <InputItem label="Ảnh cửa hàng" type="file" ref={image} name="image" />
                         </Modal.Body>
                         <Modal.Footer>

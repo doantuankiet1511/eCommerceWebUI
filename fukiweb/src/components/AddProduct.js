@@ -6,6 +6,8 @@ import Loading from "../layouts/Loading"
 import { Link, useNavigate } from "react-router-dom"
 import ErrorAlert from "../layouts/ErrorAlert"
 import InputTags from "../layouts/InputTags"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import { CKEditor } from "@ckeditor/ckeditor5-react"
 
 const AddProduct = () => {
     const [formProduct, setFormProduct] = useState({
@@ -88,7 +90,7 @@ const AddProduct = () => {
             process()
         }
     }
-
+console.log(formProduct)
     return (
         <>
             <h1 className="text-center">Thêm sản phẩm</h1>
@@ -98,8 +100,15 @@ const AddProduct = () => {
                     value={formProduct.name} setValue={e => setFormProduct({...formProduct, "name": e.target.value})} />
                 <InputItem label="Giá sản phẩm" type="number"
                     value={formProduct.price} setValue={e => setFormProduct({...formProduct, "price": e.target.value})} />
-                <InputItem label="Mô tả sản phẩm" type="text"
-                    value={formProduct.description} setValue={e => setFormProduct({...formProduct, "description": e.target.value})} />
+                {/* <InputItem label="Mô tả sản phẩm" type="text"
+                    value={formProduct.description} setValue={e => setFormProduct({...formProduct, "description": e.target.value})} /> */}
+                <Form.Group className="mb-3">
+                    <Form.Label>Mô tả sản phẩm</Form.Label>
+                    <CKEditor 
+                        editor={ClassicEditor}
+                        onChange={(event, editor) => setFormProduct({...formProduct, "description": editor.getData()})}
+                    />
+                </Form.Group>
                 <Form.Group>
                     <Form.Label>Loại sản phẩm</Form.Label>
                     <select className="ms-3" value={formProduct.category} onChange={e => setFormProduct({...formProduct, "category": e.target.value})}>

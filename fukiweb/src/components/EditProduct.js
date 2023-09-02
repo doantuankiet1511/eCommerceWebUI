@@ -5,6 +5,8 @@ import Loading from "../layouts/Loading"
 import ErrorAlert from "../layouts/ErrorAlert"
 import { Button, Form } from "react-bootstrap"
 import InputItem from "../layouts/InputItem"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import { CKEditor } from "@ckeditor/ckeditor5-react"
 
 const EditProduct = () => {
     const [product, setProduct] = useState(null)
@@ -87,13 +89,13 @@ const EditProduct = () => {
     }
 
     //Thay thể dangerouslySetInnerHTML={{__html:  product.description}}
-    const decodeHTMLEntities = (text) => {
-        var textArea = document.createElement('textarea')
-        textArea.innerHTML = text
-        return textArea.value
-    }
-    const htmlString = formProduct ? formProduct.description : ""
-    const decodedString = decodeHTMLEntities(htmlString).replace(/<\/?p>/g, '')
+    // const decodeHTMLEntities = (text) => {
+    //     var textArea = document.createElement('textarea')
+    //     textArea.innerHTML = text
+    //     return textArea.value
+    // }
+    // const htmlString = formProduct ? formProduct.description : ""
+    // const decodedString = decodeHTMLEntities(htmlString).replace(/<\/?p>/g, '')
 
     if (product === null)
         return <Loading />
@@ -109,8 +111,16 @@ const EditProduct = () => {
                     value={formProduct.name} setValue={e => setFormProduct({...formProduct, "name": e.target.value})} />
                 <InputItem label="Giá sản phẩm" type="number"
                     value={parseInt(formProduct.price)} setValue={e => setFormProduct({...formProduct, "price": e.target.value})} />
-                <InputItem label="Mô tả sản phẩm" type="text"
-                    value={decodedString} setValue={e => setFormProduct({...formProduct, "description": e.target.value})} />
+                {/* <InputItem label="Mô tả sản phẩm" type="text"
+                    value={decodedString} setValue={e => setFormProduct({...formProduct, "description": e.target.value})} /> */}
+                <Form.Group className="mb-3">
+                    <Form.Label>Mô tả sản phẩm</Form.Label>
+                    <CKEditor 
+                        editor={ClassicEditor}
+                        data={formProduct.description}
+                        onChange={(event, editor) => setFormProduct({...formProduct, "description": editor.getData()})}
+                    />
+                </Form.Group>
                 <Form.Group>
                     <Form.Label>Loại sản phẩm</Form.Label>
                     <select className="ms-3" onChange={e => setSelectedCategory(e.target.value)}>
