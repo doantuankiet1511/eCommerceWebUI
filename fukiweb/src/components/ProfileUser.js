@@ -5,6 +5,7 @@ import { Button, Col, Form, Image, Modal, Row } from "react-bootstrap"
 import ErrorAlert from "../layouts/ErrorAlert"
 import InputItem from "../layouts/InputItem"
 import Loading from "../layouts/Loading"
+import cookie from "react-cookies"
 
 const ProfileUser = () => {
     const [profileUser, dispatch] = useContext(MyUserContext)
@@ -41,6 +42,7 @@ const ProfileUser = () => {
                     }
                 })
                 if (res.status === 200) {
+                    cookie.save('current-user', res.data) 
                     dispatch({
                         "type": "edit",
                         "payload": res.data

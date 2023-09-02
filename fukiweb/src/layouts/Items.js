@@ -20,7 +20,7 @@ const Items = ({obj}) => {
             <Card>
                 <Card.Img variant="top" src={obj.image} fluid/>
                 <Card.Body>
-                    <Card.Title>{obj.name}</Card.Title>
+                    <Card.Title>{obj.name.length > 52 ? obj.name.slice(0, 52) + " ..." : obj.name}</Card.Title>
                     <Card.Title>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(obj.price)}</Card.Title>
                     <Link to={url} className="btn btn-primary">Xem chi tiết</Link>
                     <Button onClick={() => addToCart()} className="ms-1">Thêm vào giỏ hàng</Button>               

@@ -16,13 +16,14 @@ const Categories = () => {
 
     return (
         <>
-            <div className="filter-card"></div>
-            <h5>Danh mục sản phẩm</h5>
-            <Link to="/" className="nav-link">Tất cả sản phẩm</Link>
-            {categories.map(category => {
-                let url = `/?cateId=${category.id}`
-                return <Link to={url} className="nav-link" key={category.id}>{category.name}</Link>
-            })}
+            <div className="filter-card">
+                <h5 className="text-center">Danh mục sản phẩm</h5>
+                <Link to="/" className="nav-link">Tất cả sản phẩm</Link>
+                {categories.map(category => {
+                    let url = `/?cateId=${category.id}`
+                    return <Link to={url} className="nav-link" key={category.id}>{category.name}</Link>
+                })}
+            </div>
         </>
     )
 }

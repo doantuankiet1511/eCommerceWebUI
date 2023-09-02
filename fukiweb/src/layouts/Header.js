@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from "react"
-import API, { endpoints } from "../configs/API"
-import { Badge, Button, Container, Dropdown, Form, Nav, Navbar } from "react-bootstrap"
+import API, { authAPI, endpoints } from "../configs/API"
+import { Badge, Button, Container, Dropdown, Form, Nav, NavDropdown, Navbar } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { CartContext, MyUserContext } from "../configs/MyContext"
 import { LiaShoppingCartSolid } from "react-icons/lia"
+import Moment from "react-moment"
 
 const Header = () => {
     const [q, setQ] = useState("")
     const nav = useNavigate()
     const [user, dispatch] = useContext(MyUserContext)
     const [stateCart, ] = useContext(CartContext)
+    const [notifications, setNotifications] = useState(null)
 
     const search = (evt) => {
         evt.preventDefault()
@@ -26,6 +28,16 @@ const Header = () => {
     const quantity = stateCart.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.quantity
     }, 0)
+
+    useEffect(() => {
+        const loadNotifications = async () => {
+            let res = await authAPI().get(endpoints['notification'])
+            console.log(res.data)
+            setNotifications(res.data)
+        }
+        if (user)
+            loadNotifications()
+    }, [])
 
     let createShop = `/create-shop`
     let myShop = `/my-shop`
@@ -52,9 +64,13 @@ const Header = () => {
                     <Dropdown.Menu variant="secondary">
                         <Dropdown.Item> <Link className="nav nav-link" to={profileUser}> Thông tin cá nhân </Link> </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={changePassword}> Đổi mật khẩu </Link> </Dropdown.Item>
-                        {user.is_verified && user.role === "Seller" || user.role === "Employee" ?
-                            <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item> : 
-                            <Dropdown.Item> <Link className="nav nav-link" to={createShop}>Tạo cửa hàng</Link></Dropdown.Item>}
+                        {user.is_verified && user.role === "Seller" || user.role === "Employee" ? 
+                            <>
+                                {user.shop === null 
+                                    ? <Dropdown.Item> <Link className="nav nav-link" to={createShop}>Tạo cửa hàng</Link></Dropdown.Item> 
+                                    : <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item>
+                                }
+                            </>: ""}
                         {user.role === "Employee" ? 
                             <Dropdown.Item> <Link className="nav nav-link" to={listRegisterSeller}> Danh sách đăng ký </Link></Dropdown.Item> : null}
                         <Dropdown.Divider />
@@ -76,6 +92,27 @@ const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav>
                             {userInfo}
+                        </Nav>
+                        <Nav>
+                            <NavDropdown
+                                id="nav-dropdown-dark-example"
+                                title="Thông báo"
+                                menuVariant="dark"
+                            >
+                            {notifications === null ? <NavDropdown.Item>Không có thông báo!</NavDropdown.Item> :
+                                notifications.map((notification) => {
+                                    return (
+                                        <>
+                                            <NavDropdown.Item key={notification.id}>
+                                                <div>{notification.content}</div>
+                                                <Moment format="YYYY-MM-DD HH:mm">{notification.created_date}</Moment>
+                                            </NavDropdown.Item>
+                                            <hr/>
+                                        </>
+                                    )
+                                })
+                            }
+                            </NavDropdown>
                         </Nav>
                         <Nav>
                             <Link to="/wish-list" className="nav-link d-flex">

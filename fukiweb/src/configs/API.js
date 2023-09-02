@@ -14,6 +14,7 @@ export const endpoints = {
     "current-user": "/users/current-user/",
     "change-password": "/users/change-password/",
     "register": "/users/",
+    "notification": "/users/notifications/",
 
     "list-seller": "/users/list-confirm-register/",
     "confirm-seller": (userId) => `/users/${userId}/confirm/`, //PATCH

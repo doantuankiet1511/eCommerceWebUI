@@ -5,7 +5,7 @@ import InputItem from "../layouts/InputItem"
 import API, { authAPI, endpoints } from "../configs/API"
 import Loading from "../layouts/Loading"
 import ErrorAlert from "../layouts/ErrorAlert"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const CartCheckout = () => {
     const [stateCart, dispatchCart] = useContext(CartContext)
@@ -130,7 +130,12 @@ const CartCheckout = () => {
                     </tbody>
                 </Table>
 
-                {loading ? <Loading /> : <Button variant="primary" type="submit">Thanh toán</Button>}
+                {loading ? <Loading /> : (
+                    <>
+                        <Button variant="primary" type="submit" className="me-2">Thanh toán</Button>
+                        <Link to="/cart" className="btn btn-secondary">Quay lại</Link>
+                    </>
+                )}
             </Form>
         </>
     )

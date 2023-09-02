@@ -53,7 +53,8 @@ const MyShop = () => {
             try {
                 let form = new FormData()
                 form.append("name", formEditShop.name)
-                form.append("description", formEditShop.description)
+                if (formEditShop.description !== null)
+                    form.append("description", formEditShop.description)
                 if (image.current.files.length > 0)
                     form.append("avatar", image.current.files[0])
 

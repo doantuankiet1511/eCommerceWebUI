@@ -6,9 +6,10 @@ import { authAPI, endpoints } from "../configs/API"
 import ErrorAlert from "../layouts/ErrorAlert"
 import InputItem from "../layouts/InputItem"
 import { MyUserContext } from "../configs/MyContext"
+import cookie from "react-cookies"
 
 const AddShop = () => {
-    const [user, ] = useContext(MyUserContext)
+    const [user, dispatch] = useContext(MyUserContext)
     const [shop, setShop] = useState({
         "name": "",
         "description": ""
@@ -35,8 +36,18 @@ const AddShop = () => {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
-                if (res.status === 201)
+
+                if (res.status === 200) {
+                    let user = await authAPI().get(endpoints['current-user'])
+                    cookie.save('current-user', user.data) 
+        
+                    dispatch({
+                        "type": "edit",
+                        "payload": user.data
+                    })
+
                     nav("/my-shop")
+                }
                 else
                     setErr("Hệ thống đang có lỗi! Vui lòng quay lại sau!")
             } catch (ex) {
@@ -49,7 +60,7 @@ const AddShop = () => {
             }
         }
 
-        if (!user.is_verified)
+        if (user.is_verified === false)
             setErr("Tài khoản của bạn chưa được xác nhận! Vui lòng chờ xác nhận!")
         else if (shop.name === "")
             setErr("Tên cửa hàng không được để trống")
