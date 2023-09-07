@@ -110,7 +110,12 @@ const MyShop = () => {
     const prevPage = () => setPage(current => current - 1)
 
     if (shopDetail === null)
-        return <Loading />
+        return (
+            <>
+                <ErrorAlert err="Bạn chưa tạo cửa hàng" />
+                <Link to={`/create-shop`} className="btn btn-primary">Tạo cửa hàng</Link>
+            </>
+        )
 
     return (
         <>

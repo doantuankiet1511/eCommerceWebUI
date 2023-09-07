@@ -15,6 +15,13 @@ export const endpoints = {
     "change-password": "/users/change-password/",
     "register": "/users/",
     "notification": "/users/notifications/",
+    "wish-list": "/users/wish-list/",
+    "order-list": "/users/orders/",
+    "order-detail": (orderId) => `/orders/${orderId}/`,
+
+    "revenue-stats-month": "/revenue-stats-month/",
+    "revenue-stats-quarter": "/revenue-stats-quarter/",
+    "revenue-stats-year": "/revenue-stats-year/",
 
     "list-seller": "/users/list-confirm-register/",
     "confirm-seller": (userId) => `/users/${userId}/confirm/`, //PATCH

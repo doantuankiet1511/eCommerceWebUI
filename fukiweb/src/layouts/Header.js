@@ -32,7 +32,7 @@ const Header = () => {
     useEffect(() => {
         const loadNotifications = async () => {
             let res = await authAPI().get(endpoints['notification'])
-            console.log(res.data)
+            // console.log(res.data)
             setNotifications(res.data)
         }
         if (user)
@@ -44,6 +44,8 @@ const Header = () => {
     let profileUser = `/profile-user`
     let changePassword = `/profile-user/change-password`
     let listRegisterSeller = `/list-seller`
+    let listOrder = `/list-order`
+    let statsMyShop = `/stats-shop`
 
     let userInfo = (
         <>
@@ -68,11 +70,16 @@ const Header = () => {
                         </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={profileUser}> Thông tin cá nhân </Link> </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={changePassword}> Đổi mật khẩu </Link> </Dropdown.Item>
+                        <Dropdown.Item> <Link className="nav nav-link" to={listOrder}>Danh sách đơn hàng</Link> </Dropdown.Item>
                         {user.shop === null && user.role === "Seller" || user.role === "Employee" 
                             ? <Dropdown.Item> <Link className="nav nav-link" to={createShop}>Tạo cửa hàng</Link></Dropdown.Item> 
                             : ""}
                         {user.is_verified && user.shop !== null && user.role === "Seller" || user.role === "Employee" 
-                            ? <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item> 
+                            ? 
+                            <>
+                                <Dropdown.Item> <Link className="nav nav-link" to={myShop}> Cửa hàng của bạn </Link></Dropdown.Item> 
+                                <Dropdown.Item> <Link className="nav nav-link" to={statsMyShop}> Thống kê doanh thu </Link></Dropdown.Item> 
+                            </>
                             : ""}
                         {user.role === "Employee" ? 
                             <Dropdown.Item> <Link className="nav nav-link" to={listRegisterSeller}> Danh sách đăng ký </Link></Dropdown.Item> : null}
