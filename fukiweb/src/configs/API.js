@@ -42,7 +42,8 @@ export const endpoints = {
     "like-product": (productId) => `/products/${productId}/like/`,
 
     "payment-methods": "/payment-methods/",
-    "checkout": "/orders/"
+    "checkout": "/orders/",
+    "payment-momo": "/payment/"
 }
 
 export const authAPI = () => axios.create({

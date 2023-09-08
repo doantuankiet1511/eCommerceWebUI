@@ -7,6 +7,8 @@ import Loading from "../layouts/Loading"
 import ErrorAlert from "../layouts/ErrorAlert"
 import { Link, useNavigate } from "react-router-dom"
 
+const MOMO = 2
+
 const CartCheckout = () => {
     const [stateCart, dispatchCart] = useContext(CartContext)
     const [formCheckout, setFormCheckout] = useState({
@@ -42,7 +44,32 @@ const CartCheckout = () => {
 
         const process = async () => {
             try {
+                const extraData = JSON.stringify({
+                    "receiver_name": formCheckout.receiver_name,
+                    "receiver_phone": formCheckout.receiver_phone,
+                    "receiver_address": formCheckout.receiver_address,
+                    "payment_method": formCheckout.payment_method,
+                    "order_details": order_details
+                })
+
+                let nameOrder = ""
+                if (Number(formCheckout.payment_method) === MOMO) {
+                    let resPayment = await API.post(endpoints['payment-momo'], {
+                        "amount": `${totalPrice}`,
+                        "order_info": `Customer ${formCheckout.receiver_name} - ${formCheckout.receiver_phone}`,
+                        "redirectUrl": "http://localhost:3000/cart",
+                        "ipnUrl": "http://localhost:3000/cart",
+                        extraData
+                    })
+                    if (resPayment.status === 200) {
+                        const payUrl = resPayment.data.pay_url
+                        window.location.href = payUrl
+                        nameOrder = resPayment.data.orderId
+                    }
+                }
+
                 let res = await authAPI().post(endpoints['checkout'], {
+                    "name_order": nameOrder,
                     "receiver_name": formCheckout.receiver_name,
                     "receiver_phone": formCheckout.receiver_phone,
                     "receiver_address": formCheckout.receiver_address,
@@ -60,7 +87,8 @@ const CartCheckout = () => {
                     dispatchCart({
                         type: "REMOVE_ALL"
                     })
-                    nav("/")
+                    alert("Đặt hàng thành công")
+                    nav("/cart")
                 }
             } catch (ex) {
                 let msg = ""
@@ -72,8 +100,18 @@ const CartCheckout = () => {
             }
         }
 
-        setLoading(true)
-        process()
+        if (formCheckout.receiver_name === "")
+            setErr("Phải nhập tên người nhận")
+        else if (formCheckout.receiver_phone === "")
+            setErr("Phải nhập số điện thoại người nhận")
+        else if (formCheckout.receiver_address === "")
+            setErr("Phải nhập địa chỉ người nhận")
+        else if (formCheckout.payment_method === "")
+            setErr("Bạn cần phải chọn phương thức thanh toán")
+        else {
+            setLoading(true)
+            process()
+        }
     }
 
     const quantity = stateCart.reduce((accumulator, currentValue) => {
