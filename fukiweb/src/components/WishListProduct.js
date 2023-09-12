@@ -6,6 +6,7 @@ import { CartContext } from "../configs/MyContext"
 const WishListProduct = () => {
     const [listProducts, setListProducts] = useState([])
     const [ , dispatchCart] = useContext(CartContext)
+    const [like, setLike] = useState()
 
     useEffect(() => {
         const loadProducts = async () => {
@@ -14,13 +15,26 @@ const WishListProduct = () => {
             setListProducts(res.data)
         }
         loadProducts()
-    }, [])
+    }, [like])
 
-    const addToCart = () => {
+    const addToCart = (obj) => {
         dispatchCart({
             type: "ADD_TO_CART",
-            payload: {...listProducts.product, quantity: 1}
+            payload: {...obj, quantity: 1}
         })
+    }
+
+    const likeProcess = (id) => {
+        const process = async () => {
+            try {
+                let res = await authAPI().post(endpoints['like-product'](id))
+                if (res.status === 200)
+                    setLike(res.data)
+            } catch (ex) {
+                console.error(ex)
+            }
+        }
+        process()
     }
 
     if (listProducts.length === 0)
@@ -35,7 +49,7 @@ const WishListProduct = () => {
                         <th>Hình ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Giá</th>
-                        <th></th>
+                        <th colSpan={2}></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +61,8 @@ const WishListProduct = () => {
                                 </td>
                                 <td>{item.product.name}</td>
                                 <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}</td>
-                                <td style={{width: 200}}><Button className="me-1" onClick={() => addToCart()}>Thêm vào giỏ</Button></td>
+                                <td style={{width: 200}}><Button className="me-1" onClick={() => addToCart(item.product)}>Thêm vào giỏ</Button></td>
+                                <td><button onClick={() => likeProcess(item.product.id)} className={like === true || item.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button> </td>
                             </tr>
                         </>
                     )}

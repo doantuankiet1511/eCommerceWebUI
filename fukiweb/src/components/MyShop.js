@@ -9,6 +9,7 @@ import ErrorAlert from "../layouts/ErrorAlert"
 import InputItem from "../layouts/InputItem"
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
 import { CKEditor } from "@ckeditor/ckeditor5-react"
+import PaginationUI from "../layouts/PaginationUI"
 
 const MyShop = () => {
     const [shopDetail, setShopDetail] = useState(null)
@@ -22,6 +23,8 @@ const MyShop = () => {
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState("")
     const [errEdit, setErrEdit] = useState("")
+    const [totalProducts, setTotalProducts] = useState(0)
+    const [productsPerPage, setProductsPerPage] = useState(10)
 
     const [show, setShow] = useState(false);
 
@@ -40,6 +43,7 @@ const MyShop = () => {
                 console.log(res.data.results)
                 setShopDetail(res.data.results)
                 setFormEditShop(res.data.results.shop)
+                setTotalProducts(res.data.count)
             } catch (ex) {
                 setPage(1)
             }
@@ -194,7 +198,7 @@ const MyShop = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {shopDetail.products.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)).map((product, index) => 
+                        {shopDetail.products.sort((a, b) => new Date(b.updated_date) - new Date(a.updated_date)).map((product, index) => 
                             <>
                                 <tr key={product.id}>
                                     <td className="text-center">{index + 1}</td>
@@ -225,10 +229,11 @@ const MyShop = () => {
                 </Table>
             </Row>
             <Row>
-                <ButtonGroup aria-label="Basic example" className="mt-2">
+                <PaginationUI totalItems={totalProducts} itemsPerPage={productsPerPage} currentPage={page} setCurrentPage={setPage} />
+                {/* <ButtonGroup aria-label="Basic example" className="mt-2">
                     <Button onClick={prevPage} variant="outline-primary">&lt;&lt;</Button>
                     <Button onClick={nextPage} variant="outline-primary">&gt;&gt;</Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
             </Row>
         </>
     )

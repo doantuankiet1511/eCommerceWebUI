@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react"
 import { Button, ButtonGroup, Col, Form, InputGroup, Row } from "react-bootstrap"
-import API, { endpoints } from "../configs/API"
+import API, { authAPI, endpoints } from "../configs/API"
 import { Link, useSearchParams } from "react-router-dom"
 import Loading from "../layouts/Loading"
 import Items from "../layouts/Items"
 import Categories from "./Categories"
+import PaginationUI from "../layouts/PaginationUI"
 
 const Products = () => {
     const [products, setProducts] = useState(null)
     const [categories, setCategories] = useState([])
     const [page, setPage] = useState(1)
     const [q] = useSearchParams()
+    const [action, setAction] = useState(false)
+    const [totalProducts, setTotalProducts] = useState(0)
+    const [productsPerPage, setProductsPerPage] = useState(5)
 
     const [price, setPrice] = useState({
         "min": null,
@@ -53,9 +57,10 @@ const Products = () => {
                 if (sortByValue !== null)
                     e += `&ordering=${sortByValue}`
 
-                let res = await API.get(e)
+                let res = await authAPI().get(e)
     
                 setProducts(res.data.results)
+                setTotalProducts(res.data.count)
             } catch (ex) {
                 setPage(1)
             }
@@ -73,12 +78,9 @@ const Products = () => {
         })
         loadProducts()
         loadCategories()
-    }, [page, q, sortByValue]) 
+    }, [page, q, sortByValue, action]) 
 
     const getNameCategory = categories.filter(c => c.id === parseInt(q.get("cateId"))).map(c => c.name)
-
-    const nextPage = () => setPage(current => current + 1)
-    const prevPage = () => setPage(current => current - 1)
 
     if (products === null)
         return <Loading />
@@ -171,12 +173,9 @@ const Products = () => {
                         </Col>
                     </Row>
                     <Row>
-                        {products.map(product => <Items key={product.id} obj={product} />)}
+                        {products.map(product => <Items key={product.id} obj={product} setAction={setAction} />)}
                     </Row>
-                    <ButtonGroup aria-label="Basic example" className="mt-2">
-                        <Button onClick={prevPage} variant="outline-primary">&lt;&lt;</Button>
-                        <Button onClick={nextPage} variant="outline-primary">&gt;&gt;</Button>
-                    </ButtonGroup>
+                    <PaginationUI totalItems={totalProducts} itemsPerPage={productsPerPage} currentPage={page} setCurrentPage={setPage} /> 
                 </Col>
             </Row>
         </>

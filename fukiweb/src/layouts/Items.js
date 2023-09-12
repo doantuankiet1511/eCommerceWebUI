@@ -1,10 +1,13 @@
-import { useContext } from "react"
-import { Button, Card, Col } from "react-bootstrap"
+import { useContext, useState } from "react"
+import { Button, Card, Col, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { CartContext } from "../configs/MyContext"
+import { CartContext, MyUserContext } from "../configs/MyContext"
+import { authAPI, endpoints } from "../configs/API"
 
-const Items = ({obj}) => {
+const Items = ({obj, setAction}) => {
     const [stateCart, dispatchCart] = useContext(CartContext)
+    const [like, setLike] = useState()
+    const [user, ] = useContext(MyUserContext)
 
     const addToCart = () => {
         dispatchCart({
@@ -12,6 +15,28 @@ const Items = ({obj}) => {
             payload: {...obj, quantity: 1}
         })
     }
+
+    const likeProcess = (id) => {
+        const process = async () => {
+            try {
+                let res = await authAPI().post(endpoints['like-product'](id))
+                if (res.status === 200)
+                    setLike(res.data)
+            } catch (ex) {
+                console.error(ex)
+            } finally {
+                setAction(false)
+            }
+        }
+        setAction(true)
+        process()
+    }
+
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+          Bạn cần phải đăng nhập!
+        </Tooltip>
+    );
 
     let url = `/products/${obj.id}`
 
@@ -21,9 +46,23 @@ const Items = ({obj}) => {
                 <Card.Img variant="top" src={obj.image} fluid/>
                 <Card.Body>
                     <Card.Title>{obj.name.length > 52 ? obj.name.slice(0, 52) + " ..." : obj.name}</Card.Title>
-                    <Card.Title>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(obj.price)}</Card.Title>
-                    <Link to={url} className="btn btn-primary">Xem chi tiết</Link>
-                    <Button onClick={() => addToCart()} className="ms-1">Thêm vào giỏ hàng</Button>               
+                    <Card.Title>
+                        {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(obj.price)}
+                        {user ? <button onClick={() => likeProcess(obj.id)} className={like === true || obj.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button> 
+                            : (
+                                <OverlayTrigger
+                                    placement="right"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={renderTooltip}
+                                >
+                                    <button onClick={() => likeProcess(obj.id)} className={like === true || obj.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button>  
+                                </OverlayTrigger>
+                            )}
+                    </Card.Title>
+                    <div>
+                        <Link to={url} className="btn btn-primary">Xem chi tiết</Link>
+                        <Button onClick={() => addToCart()} className="ms-1">Thêm vào giỏ hàng</Button>   
+                    </div>          
                 </Card.Body>
             </Card>
         </Col>
