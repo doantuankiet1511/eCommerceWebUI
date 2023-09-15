@@ -44,28 +44,26 @@ const StatsMyShop = () => {
                 setStatsMonth(resMonth.data)
             } else if (quarter !== "") {
                 let dataMonthQuarter = []
-                month_quarter.map( async (month) => {
+                for await (const month of month_quarter) {
                     let resMonth = await authAPI().post(endpoints['revenue-stats-month'], {
                         "year": year,
                         "month": month
                     })
                     // console.log("Month" + `${month}`, resMonth.data)
                     dataMonthQuarter.push(resMonth.data)
-                    setStatsMonth([...dataMonthQuarter])
-                })
-                // setStatsMonth(dataMonthQuarter)
+                }
+                setStatsMonth(dataMonthQuarter)
             } else {
                 let dataMonths = []
-                months.map( async (number) => {
+                for await (const number of months) {
                     let resMonth = await authAPI().post(endpoints['revenue-stats-month'], {
                         "year": year,
                         "month": number
                     })
                     // console.log("Month" + `${number}`, resMonth.data)
                     dataMonths.push(resMonth.data)
-                    setStatsMonth([...dataMonths])
-                })
-                // setStatsMonth(dataMonths)
+                }
+                setStatsMonth(dataMonths)
             }
 
             if (quarter !== "") {
@@ -104,13 +102,13 @@ const StatsMyShop = () => {
             }
 
             let dataListYears = []
-            listYears.map( async (year) => {
+            for await (const year of listYears) {
                 let resListYears = await authAPI().post(endpoints['revenue-stats-year'], {
                     "year": year
-                }) 
+                })
                 dataListYears.push(resListYears.data)
-                setStatsListYears([...dataListYears])
-            })
+            }
+            setStatsListYears(dataListYears)
         }
 
         if (inputYear.start > inputYear.end)
@@ -233,7 +231,7 @@ const StatsMyShop = () => {
             return (<LineChart data={data} options={options} />)
         }
     }
-    console.log("Stats", statsMonth, statsYear, statsQuarter)
+    // console.log("Stats", statsMonth, statsYear, statsQuarter)
 
     return (
         <>
