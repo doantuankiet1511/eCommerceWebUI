@@ -226,7 +226,7 @@ const ProductDetail = () => {
     const addToCart = () => {
         dispatchCart({
             type: "ADD_TO_CART",
-            payload: {...product, quantity: 1}
+            payload: {id: product.id, name: product.name, price: product.price, image: product.image, quantity: 1}
         })
     }
 

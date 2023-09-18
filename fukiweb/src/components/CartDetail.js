@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 
 const CartDetail = () => {
     const [stateCart, dispatchCart ] = useContext(CartContext)
+    console.log(stateCart)
 
     const increase = (item) => {
         dispatchCart({

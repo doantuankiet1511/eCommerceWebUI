@@ -72,35 +72,39 @@ const Register = () => {
 
     return (
         <>
-            <h1 className="text-center text-success">Đăng ký người dùng</h1>
+            <div className="my-5 d-flex justify-content-center align-items-center">
+                <Row className="border rounder-5 p-3 bg-white shadow" style={{width: 930}}>
+                    <h1 className="text-center text-success">ĐĂNG KÝ NGƯỜI DÙNG</h1>
 
-            {err?<ErrorAlert err={err} />:""}
-            <Form onSubmit={register}>
-                <InputItem label="Tên người dùng" type="text" value={user.firstName} controlId="formGroupfirstName" name="firstName"
-                            setValue={setValue}/>
-                <InputItem label="Họ và tên lót" type="text" value={user.lastName} controlId="formGrouplastName" name="lastName"
-                            setValue={setValue}/>
-                <InputItem label="Tên đăng nhập" type="text" value={user.username} controlId="formGroupUsername" name="username"
-                            setValue={setValue}/>
-                <InputItem label="Mật khẩu" type="password" value={user.password} controlId="formGroupPassword" name="password"
-                            setValue={setValue}/>
-                <InputItem label="Xác nhận mật khẩu" type="password" value={user.confirmPassword} controlId="formGroupConfirmPassword" name="confirmPassword"
-                            setValue={setValue}/>
-                <Form.Group className="mb-3">
-                    <Form.Label>
-                        Bạn muốn trở thành
-                    </Form.Label>
-                    <Row xs="auto" className="ms-1">
-                        <Form.Check inline label="Khách hàng" type="radio" name="role" 
-                            value="Customer" onChange={setValue} id={`inline-radio-1`} checked />
-                        <Form.Check inline label="Nhà cung cấp" type="radio" name="role"
-                            value="Seller" onChange={setValue} id={`inline-radio-2`} />
-                    </Row>
-                </Form.Group>
-                <InputItem label="Ảnh đại diện" type="file" controlId="avatar" ref={avatar} name="avatar"/>
-                {loading ? <Loading /> : <Button variant="primary" type="submit">Đăng ký</Button>}
+                    {err?<ErrorAlert err={err} />:""}
+                    <Form onSubmit={register}>
+                        <InputItem label="Tên người dùng" type="text" value={user.firstName} controlId="formGroupfirstName" name="firstName"
+                                    setValue={setValue}/>
+                        <InputItem label="Họ và tên lót" type="text" value={user.lastName} controlId="formGrouplastName" name="lastName"
+                                    setValue={setValue}/>
+                        <InputItem label="Tên đăng nhập" type="text" value={user.username} controlId="formGroupUsername" name="username"
+                                    setValue={setValue}/>
+                        <InputItem label="Mật khẩu" type="password" value={user.password} controlId="formGroupPassword" name="password"
+                                    setValue={setValue}/>
+                        <InputItem label="Xác nhận mật khẩu" type="password" value={user.confirmPassword} controlId="formGroupConfirmPassword" name="confirmPassword"
+                                    setValue={setValue}/>
+                        <Form.Group className="mb-3">
+                            <Form.Label>
+                                Bạn muốn trở thành
+                            </Form.Label>
+                            <Row xs="auto" className="ms-1">
+                                <Form.Check inline label="Khách hàng" type="radio" name="role" 
+                                    value="Customer" onChange={setValue} id={`inline-radio-1`} checked />
+                                <Form.Check inline label="Nhà cung cấp" type="radio" name="role"
+                                    value="Seller" onChange={setValue} id={`inline-radio-2`} />
+                            </Row>
+                        </Form.Group>
+                        <InputItem label="Ảnh đại diện" type="file" controlId="avatar" ref={avatar} name="avatar"/>
+                        {loading ? <Loading /> : <Button variant="primary" type="submit">Đăng ký</Button>}
 
-            </Form>
+                    </Form>
+                </Row>
+            </div>
         </>
     )
 }

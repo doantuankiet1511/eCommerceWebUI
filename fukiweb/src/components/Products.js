@@ -14,7 +14,7 @@ const Products = () => {
     const [q] = useSearchParams()
     const [action, setAction] = useState(false)
     const [totalProducts, setTotalProducts] = useState(0)
-    const [productsPerPage, setProductsPerPage] = useState(5)
+    const [productsPerPage, setProductsPerPage] = useState(10)
 
     const [price, setPrice] = useState({
         "min": null,
@@ -150,7 +150,7 @@ const Products = () => {
     return (
         <>
             <Row className="mt-4">
-                <Col xs={6} md={2}>
+                <Col xs={12} md={2}>
                     {navFilterProduct}
                 </Col>
                 <Col xs={12} md={10}>

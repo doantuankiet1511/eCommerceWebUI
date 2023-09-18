@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { Button, Form } from "react-bootstrap"
+import { Button, Form, Row } from "react-bootstrap"
 import API, { authAPI, endpoints } from "../configs/API"
 import cookie from "react-cookies"
 import Loading from "../layouts/Loading"
@@ -17,13 +17,17 @@ const Login = () => {
     const login = (evt) => {
         evt.preventDefault()
 
-        const process = async () => {
+        const processLogin = async () => {
             try {
+                if (!process.env.REACT_APP_CLIENT_ID || !process.env.REACT_APP_CLIENT_SECRET) {
+                    throw new Error("Bạn quên thiết lập REACT_APP_CLIENT_ID hoặc REACT_APP_CLIENT_SECRET")
+                }
+                
                 let res = await API.post(endpoints['login'], {
                     "username": username,
                     "password": password,
-                    "client_id": "dOpYblCChifIEB47b9RvjwZMhHWoNPKYjuy8z3gO",
-                    "client_secret": "w1MJRLnuePGEanPq45KzQysE0odalmdS3aEAv5TaO2uDQb6FIHYbimvklQWdfZdKhVyItJvNz1E19RRsvWVCHrDNvHJc4CAYpA5v2tiih6KrT2sImiJTU0QvL5vTIpiI",
+                    "client_id": process.env.REACT_APP_CLIENT_ID,
+                    "client_secret": process.env.REACT_APP_CLIENT_SECRET,
                     "grant_type": "password"
                 })
     
@@ -48,7 +52,7 @@ const Login = () => {
             setErr("Phải nhập username và password")
         else {
             setLoading(true)
-            process()
+            processLogin()
         }
     }
 
@@ -57,28 +61,32 @@ const Login = () => {
 
     return (
         <>
-            <h1 className="text-center text-success">ĐĂNG NHẬP NGƯỜI DÙNG</h1>
+            <div className="my-5 d-flex justify-content-center align-items-center">
+                <Row className="border rounder-5 p-3 bg-white shadow" style={{width: 930}}>
+                    <h1 className="text-center text-success">ĐĂNG NHẬP NGƯỜI DÙNG</h1>
 
-            {err?<ErrorAlert err={err} />:""}
+                    {err?<ErrorAlert err={err} />:""}
 
-            <Form onSubmit={login}>
-                <Form.Group className="mb-3" controlId="formGroupUsername">
-                    <Form.Label>Tên đăng nhập</Form.Label>
-                    <Form.Control type="text" 
-                                    value={username}
-                                    onChange={e => setUsername(e.target.value)}
-                                    placeholder="Nhập tên đăng nhập" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formGroupPassword">
-                    <Form.Label>Mật khẩu</Form.Label>
-                    <Form.Control type="password" 
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    placeholder="Nhập mật khẩu" />
-                </Form.Group>
-                {loading ? <Loading /> : <Button variant="primary" type="submit">Đăng nhập</Button>}
+                    <Form onSubmit={login}>
+                        <Form.Group className="mb-3" controlId="formGroupUsername">
+                            <Form.Label>Tên đăng nhập</Form.Label>
+                            <Form.Control type="text" 
+                                            value={username}
+                                            onChange={e => setUsername(e.target.value)}
+                                            placeholder="Nhập tên đăng nhập" />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formGroupPassword">
+                            <Form.Label>Mật khẩu</Form.Label>
+                            <Form.Control type="password" 
+                                            value={password}
+                                            onChange={e => setPassword(e.target.value)}
+                                            placeholder="Nhập mật khẩu" />
+                        </Form.Group>
+                        {loading ? <Loading /> : <Button variant="primary" type="submit">Đăng nhập</Button>}
 
-            </Form>
+                    </Form>
+                </Row>
+            </div>
         </>
     )
 }

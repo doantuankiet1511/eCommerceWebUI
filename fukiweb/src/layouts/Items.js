@@ -12,7 +12,7 @@ const Items = ({obj, setAction}) => {
     const addToCart = () => {
         dispatchCart({
             type: "ADD_TO_CART",
-            payload: {...obj, quantity: 1}
+            payload: {id: obj.id, name: obj.name, price: obj.price, image: obj.image, quantity: 1}
         })
     }
 

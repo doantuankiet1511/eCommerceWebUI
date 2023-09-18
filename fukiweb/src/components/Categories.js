@@ -16,7 +16,7 @@ const Categories = () => {
 
     return (
         <>
-            <div className="filter-card">
+            <div className="filter-categories">
                 <h5 className="text-center">Danh mục sản phẩm</h5>
                 <Link to="/" className="nav-link">Tất cả sản phẩm</Link>
                 {categories.map(category => {
