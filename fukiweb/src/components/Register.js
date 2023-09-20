@@ -13,7 +13,7 @@ const Register = () => {
         "username": "",
         "password": "",
         "confirmPassword": "",
-        "role": ""
+        "role": "Customer"
     })
     const avatar = useRef()
     const nav = useNavigate()
@@ -94,7 +94,7 @@ const Register = () => {
                             </Form.Label>
                             <Row xs="auto" className="ms-1">
                                 <Form.Check inline label="Khách hàng" type="radio" name="role" 
-                                    value="Customer" onChange={setValue} id={`inline-radio-1`} checked />
+                                    value="Customer" onChange={setValue} id={`inline-radio-1`} checked={user.role==="Customer"} />
                                 <Form.Check inline label="Nhà cung cấp" type="radio" name="role"
                                     value="Seller" onChange={setValue} id={`inline-radio-2`} />
                             </Row>

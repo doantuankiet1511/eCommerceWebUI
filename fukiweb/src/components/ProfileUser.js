@@ -78,7 +78,8 @@ const ProfileUser = () => {
             </h1>
             <Row className="mt-7">
                 <Col xs={4}>
-                    <Image src={profileUser.avatar} rounded style={{ width: '50%' }}/>
+                    {/* <Image src={profileUser.avatar} rounded style={{ width: '50%' }}/> */}
+                    <Image src={profileUser.image} rounded style={{ width: '50%' }}/>
                 </Col>
                 <Col xs={8}>
                     <Row >

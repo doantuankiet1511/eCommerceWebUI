@@ -366,7 +366,7 @@ const ProductDetail = () => {
                         reviews.map(review => (
                             <Row className="m-1 p-1" key={review.id}>
                                 <Col xs={3} md={1}>
-                                    <Image src={review.user.avatar} alt={review.user.username} width={50} rounded/>
+                                    <Image src={review.user.image} alt={review.user.username} width={50} rounded/>
                                 </Col>
                                 <Col xs={9} md={11}>
                                     <div>

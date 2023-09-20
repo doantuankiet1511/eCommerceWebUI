@@ -43,7 +43,7 @@ const ShopDetail = () => {
             <h1 className="text-center">Cửa hàng {shop.name}</h1>
             <Row className="my-4">
                 <Col md={4} className="text-center">
-                    <Image src={shop.avatar} alt={shop.name} width="40%"/>
+                    <Image src={shop.image} alt={shop.name} width="40%"/>
                 </Col>
                 <Col md={8}>
                     <Row>

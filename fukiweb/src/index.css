@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
+.dropdown-action a {
+  color: #000;
+}
+
+.dropdown-action a:hover {
+  font-weight: bold;
+  color: #000;
+}
+
 .filter-categories a:hover {
   font-weight: bold;
 }

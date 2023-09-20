@@ -59,15 +59,15 @@ const Header = () => {
             <>
                 <Dropdown>
                     <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
-                        <img src={user.avatar} alt={user.username} width="30" className="rounded-circle" />
+                        <img src={user.image} alt={user.username} width="30" className="rounded-circle" />
                         Chào {user.username}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu variant="secondary">
-                        <Dropdown.Item className="text-center">
+                    <Dropdown.Menu variant="secondary dropdown-action">
+                        <Dropdown.Header className="text-center">
                             Vai trò: {user.role} 
                             {user.is_verified ? <Badge bg="primary" className="ms-1">Đã xác nhận</Badge> : <Badge bg="danger" className="ms-1">Chưa xác nhận</Badge>}
-                        </Dropdown.Item>
+                        </Dropdown.Header>
                         <Dropdown.Item> <Link className="nav nav-link" to={profileUser}> Thông tin cá nhân </Link> </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={changePassword}> Đổi mật khẩu </Link> </Dropdown.Item>
                         <Dropdown.Item> <Link className="nav nav-link" to={listOrder}>Danh sách đơn hàng</Link> </Dropdown.Item>
@@ -84,9 +84,7 @@ const Header = () => {
                         {user.role === "Employee" ? 
                             <Dropdown.Item> <Link className="nav nav-link" to={listRegisterSeller}> Danh sách đăng ký </Link></Dropdown.Item> : null}
                         <Dropdown.Divider />
-                        <Dropdown.Item>
-                            <Button className="btn btn-danger" onClick={logout}>Đăng xuất</Button>
-                        </Dropdown.Item>
+                        <Button className="btn btn-danger d-flex mx-auto" onClick={logout}>Đăng xuất</Button>
                     </Dropdown.Menu>
                 </Dropdown>
             </>

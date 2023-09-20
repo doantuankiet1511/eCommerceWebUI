@@ -104,7 +104,7 @@ const EditProduct = () => {
 
     return (
         <>
-            <h1 className="text-center">CHỈNH SỬA SẢN PHẨM {product.id}</h1>
+            <h1 className="text-center">CHỈNH SỬA SẢN PHẨM</h1>
             {err?<ErrorAlert err={err} />:""}
             <Form onSubmit={editProduct}>
                 <InputItem label="Tên sản phẩm" type="text" 
