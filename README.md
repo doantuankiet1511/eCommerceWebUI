@@ -1,7 +1,10 @@
 # eCommerceWebUI
 PROJECT SÀN GIAO DỊCH THƯƠNG MẠI ĐIỆN TỬ
-Link API: https://phucnv.pythonanywhere.com/
+<br>
+Link API: https://phucnv.pythonanywhere.com/ 
+<br>
 Back-end (Django REST Framework): https://github.com/KaitorNguyen/eCommerceWeb.git
+<br>
 Front-end (React JS): https://github.com/KaitorNguyen/eCommerceWebUI.git
 
 - Đăng nhập (các vai trò quản trị, nhân viên sàn giao dịch, người bán hoặc người dùng thường).
