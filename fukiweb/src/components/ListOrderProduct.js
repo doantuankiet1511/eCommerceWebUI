@@ -47,7 +47,7 @@ const ListOrderProduct = () => {
                                 <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total_price)}</td>
                                 <td>{order.payment_method.name}</td>
                                 <td>{order.status === "PENDING" && <Badge bg="primary">Pending</Badge>}</td>
-                                <td>
+                                <td className="text-center">
                                     <Link to={`/orders/${order.id}`} className="btn btn-primary">Xem chi tiết</Link>
                                 </td>
                             </tr>

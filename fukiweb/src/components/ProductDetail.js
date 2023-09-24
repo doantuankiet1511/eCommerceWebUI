@@ -277,15 +277,15 @@ const ProductDetail = () => {
                         
                     </div>
                     <div>
-                        <p>Giá: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</p>
+                        <p>Cửa hàng: <Link to={url} className="me-1 shop-name" style={{textDecoration: "none"}}>{product.shop.name}</Link></p>
                         <p>Loại sản phẩm: {product.category.name}</p>
+                        <p>Giá: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</p>
                     </div>
                     <div>
                         {product.tags.map(tag => <Badge key={tag.id} className="m-1" bg="primary">{tag.name}</Badge>)}
                     </div>
-                    <div>
-                        <Link to={url} className="btn btn-primary me-1">{product.shop.name}</Link>
-                        <Button className="me-1" onClick={() => addToCart()}>Thêm vào giỏ</Button>
+                    <div className="mt-2">
+                        <Button className="me-2" onClick={() => addToCart()}>Thêm vào giỏ</Button>
                         <button onClick={likeProcess} className={like === true || product.liked === true?"btn btn-danger":"btn btn-outline-danger"} style={{fontSize:"16px"}}>♡</button>
                     </div>
                 </Col>
@@ -366,7 +366,7 @@ const ProductDetail = () => {
                         reviews.map(review => (
                             <Row className="m-1 p-1" key={review.id}>
                                 <Col xs={3} md={1}>
-                                    <Image src={review.user.image} alt={review.user.username} width={50} rounded/>
+                                    <Image src={review.user.image || review.user.avatar} alt={review.user.username} width={70} rounded/>
                                 </Col>
                                 <Col xs={9} md={11}>
                                     <div>
@@ -377,7 +377,7 @@ const ProductDetail = () => {
                                             readonly
                                         />
                                     </div>
-                                    <p>{review.content}</p>
+                                    <p className="mb-0">{review.content}</p>
                                     <small>Được review bởi {review.user.username} vào {review.updated_date ? <Moment fromNow>{review.updated_date}</Moment> : <Moment fromNow>{review.created_date}</Moment>}  </small>
                                 </Col>
                             </Row>

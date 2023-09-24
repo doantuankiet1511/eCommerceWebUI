@@ -61,8 +61,8 @@ const WishListProduct = () => {
                                 </td>
                                 <td>{item.product.name}</td>
                                 <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}</td>
-                                <td style={{width: 200}}><Button className="me-1" onClick={() => addToCart(item.product)}>Thêm vào giỏ</Button></td>
-                                <td><button onClick={() => likeProcess(item.product.id)} className={like === true || item.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button> </td>
+                                <td style={{width: 200, textAlign: "center"}}><Button className="me-1" onClick={() => addToCart(item.product)}>Thêm vào giỏ</Button></td>
+                                <td><button onClick={() => likeProcess(item.product.id)} className={like === true || item.liked === true?"btn btn-danger":"btn btn-outline-danger"} style={{fontSize:"16px"}}>♡</button> </td>
                             </tr>
                         </>
                     )}

@@ -43,10 +43,10 @@ const CartDetail = () => {
 
     return (
         <>
-            <h1 className="text-center">GIỎ HÀNG</h1>
+            <h1 className="text-center mt-2">GIỎ HÀNG</h1>
             {stateCart.length > 0 ? (
                 <>
-                    <Button onClick={() => removeAll()}>Xóa tất cả</Button>
+                    <Button variant="danger" onClick={() => removeAll()}>Xóa tất cả</Button>
                     <Table bordered hover variant="light" className="mt-4">
                         <thead className="text-center">
                             <tr>
@@ -80,7 +80,7 @@ const CartDetail = () => {
                     </Table>
                     <div>Số lượng: {quantity}</div>
                     <div>Tổng số tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}</div>
-                    <Link to={'/cart/checkout'} className="btn btn-primary">Thanh toán</Link>
+                    <Link to={'/cart/checkout'} className="btn btn-primary mt-1">Thanh toán</Link>
                 </>
             ) : 
             <>

@@ -37,7 +37,7 @@ const Header = () => {
         }
         if (user)
             loadNotifications()
-    }, [])
+    }, [user])
 
     let createShop = `/create-shop`
     let myShop = `/my-shop`
@@ -59,12 +59,12 @@ const Header = () => {
             <>
                 <Dropdown>
                     <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
-                        <img src={user.image} alt={user.username} width="30" className="rounded-circle" />
+                        <img src={user.image||user.avatar} alt={user.username} width="30" className="rounded-circle" />
                         Chào {user.username}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu variant="secondary dropdown-action">
-                        <Dropdown.Header className="text-center">
+                        <Dropdown.Header className="text-center px-4">
                             Vai trò: {user.role} 
                             {user.is_verified ? <Badge bg="primary" className="ms-1">Đã xác nhận</Badge> : <Badge bg="danger" className="ms-1">Chưa xác nhận</Badge>}
                         </Dropdown.Header>
@@ -107,7 +107,7 @@ const Header = () => {
                                 title="Thông báo"
                                 menuVariant="dark"
                             >
-                            {notifications === null ? <NavDropdown.Item>Không có thông báo!</NavDropdown.Item> :
+                            {notifications === null || notifications.length === 0 ? <NavDropdown.Item>Không có thông báo!</NavDropdown.Item> :
                                 notifications.map((notification) => {
                                     return (
                                         <>

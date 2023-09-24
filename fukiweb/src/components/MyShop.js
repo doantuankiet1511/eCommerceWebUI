@@ -52,6 +52,10 @@ const MyShop = () => {
         loadMyShopDetail()
     }, [page, actionProduct, show])
 
+    if (formEditShop.description === null) {
+        setFormEditShop({...formEditShop, "description": ""})
+    }
+
     const editShop = (evt , id) => {
         evt.preventDefault()
 
@@ -126,7 +130,7 @@ const MyShop = () => {
             <h1 className="text-center">CỬA HÀNG CỦA TÔI</h1>
             <Row className="mt-2">
                 <Col md={4} className="text-center">
-                    <Image src={shopDetail.shop.image} alt={shopDetail.shop.name} width="40%"/>
+                    <Image src={shopDetail.shop.image||shopDetail.shop.avatar} alt={shopDetail.shop.name} width="40%"/>
                 </Col>
                 <Col md={8}>
                     <Row>

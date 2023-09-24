@@ -94,7 +94,8 @@ const CartCheckout = () => {
                 let msg = ""
                 for (let e of Object.values(ex.response.data))
                     msg += `${e} `
-                setErr(msg)
+                console.error(msg)
+                setErr("Hiện tại không thể thực hiện thanh toán với Momo! Vui lòng sử dụng phương thức thanh toán khác!")
             } finally {
                 setLoading(false)
             }

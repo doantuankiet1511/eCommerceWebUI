@@ -20,7 +20,7 @@ const Comment = ({ obj, replies, currentUserId, deleteComment, replyComment, edi
         <>
             <Row className="m-1 p-1" key={obj.id}>
                 <Col xs={3} md={1}>
-                    <Image src={obj.user.image} alt={obj.user.username} width={50} rounded/>
+                    <Image src={obj.user.image || obj.user.avatar} alt={obj.user.username} width={65} style={{maxHeight: 65, objectFit: "scale-down"}} rounded/>
                 </Col>
                 <Col xs={9} md={11}>
                     <p>{obj.content}</p>

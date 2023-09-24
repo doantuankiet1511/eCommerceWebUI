@@ -14,7 +14,7 @@ const Products = () => {
     const [q] = useSearchParams()
     const [action, setAction] = useState(false)
     const [totalProducts, setTotalProducts] = useState(0)
-    const [productsPerPage, setProductsPerPage] = useState(10)
+    const [productsPerPage, setProductsPerPage] = useState(9)
 
     const [price, setPrice] = useState({
         "min": null,

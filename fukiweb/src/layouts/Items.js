@@ -46,22 +46,26 @@ const Items = ({obj, setAction}) => {
                 <Card.Img variant="top" src={obj.image} fluid/>
                 <Card.Body>
                     <Card.Title>{obj.name.length > 52 ? obj.name.slice(0, 52) + " ..." : obj.name}</Card.Title>
-                    <Card.Title>
-                        {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(obj.price)}
-                        {user ? <button onClick={() => likeProcess(obj.id)} className={like === true || obj.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button> 
-                            : (
-                                <OverlayTrigger
-                                    placement="right"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={renderTooltip}
-                                >
-                                    <button onClick={() => likeProcess(obj.id)} className={like === true || obj.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button>  
-                                </OverlayTrigger>
-                            )}
-                    </Card.Title>
-                    <div>
-                        <Link to={url} className="btn btn-primary">Xem chi tiết</Link>
-                        <Button onClick={() => addToCart()} className="ms-1">Thêm vào giỏ hàng</Button>   
+                    <div className="d-flex">
+                        <Card.Title>
+                            {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(obj.price)}
+                        </Card.Title>
+                        <Card.Title>
+                            {user ? <button onClick={() => likeProcess(obj.id)} className={like === true || obj.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button> 
+                                : (
+                                    <OverlayTrigger
+                                        placement="right"
+                                        delay={{ show: 250, hide: 400 }}
+                                        overlay={renderTooltip}
+                                    >
+                                        <button onClick={() => likeProcess(obj.id)} className={like === true || obj.liked === true?"btn btn-danger ms-4":"btn btn-outline-danger ms-4"} style={{fontSize:"16px"}}>♡</button>  
+                                    </OverlayTrigger>
+                                )}
+                        </Card.Title>
+                    </div>
+                    <div className="d-flex flex-wrap">
+                        <Link to={url} className="btn btn-outline-primary m-1">Xem chi tiết</Link>
+                        <Button onClick={() => addToCart()} variant="outline-primary" className="m-1">Thêm vào giỏ hàng</Button>   
                     </div>          
                 </Card.Body>
             </Card>

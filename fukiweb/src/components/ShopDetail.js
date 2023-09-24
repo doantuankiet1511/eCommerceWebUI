@@ -11,7 +11,7 @@ const ShopDetail = () => {
     const [products, setProducts] = useState(null)
     const [page, setPage] = useState(1)
     const [totalProducts, setTotalProducts] = useState(0)
-    const [productsPerPage, setProductsPerPage] = useState(5)
+    const [productsPerPage, setProductsPerPage] = useState(9)
 
     const {shopId} = useParams()
     console.log(shop)
@@ -43,13 +43,15 @@ const ShopDetail = () => {
             <h1 className="text-center">Cửa hàng {shop.name}</h1>
             <Row className="my-4">
                 <Col md={4} className="text-center">
-                    <Image src={shop.image} alt={shop.name} width="40%"/>
+                    <Image src={shop.image || shop.avatar} alt={shop.name} width="40%"/>
                 </Col>
                 <Col md={8}>
-                    <Row>
-                        <Col md={3}>Mô tả</Col>
-                        <Col md={9} className="_p-features" dangerouslySetInnerHTML={{ __html: shop.description }}></Col>
-                    </Row>
+                    {shop.description && (
+                        <Row>
+                            <Col md={3}>Mô tả</Col>
+                            <Col md={9} className="_p-features" dangerouslySetInnerHTML={{ __html: shop.description }}></Col>
+                        </Row>
+                    )}
                     <Row>
                         <Col md={3}>Số lượng sản phẩm</Col>
                         <Col md={9}>{shop.product_count}</Col>
